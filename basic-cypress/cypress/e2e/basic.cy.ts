@@ -6,6 +6,15 @@ describe("Basic testing ", () => {
 	it.only("search input should return at least one element", () => {
 		cy.visit("https://rahulshettyacademy.com/seleniumPractise/#/");
 
+		//cypress uses promises on every command
+
+		//check brand text
+		cy.get(".brand").should("have.text", "GREENKART");
+
+		cy.get(".brand").then(($element) => {
+			console.log($element.text());
+		});
+
 		cy.get(".search-keyword").type("ca");
 
 		cy.get(".product").should("be.visible").and("have.length.at.least", 2);
@@ -13,10 +22,9 @@ describe("Basic testing ", () => {
 		//another option
 		cy.get(".product:visible").should("have.length.at.least", 1);
 
-      cy.get(".products").as("productsLocator");
+		cy.get(".products").as("productsLocator");
 
-
-      // pick second product and add1s to cart
+		// pick second product and add1s to cart
 		cy.get("@productsLocator")
 			.find(".product")
 			.eq(2)
@@ -37,16 +45,18 @@ describe("Basic testing ", () => {
 				}
 			});
 
-         //cypress uses promises on every command
+		//finish order on page
+		cy.get("a.cart-icon").click();
 
-      
-      //check brand text
+		cy.get(".cart-preview")
+			.should("have.class", "active")
+			.then(($element) => {
+				const checkoutButton = $element.find("button");
+				cy.wrap(checkoutButton).click();
+			});
 
-      cy.get(".brand").should("have.text", "GREENKART");
+		cy.url().should("include", "https://rahulshettyacademy.com/seleniumPractise/#/cart");
 
-      cy.get(".brand").then($element =>{
-         console.log($element.text());
-      })
-         
+		cy.get("button").contains("Place Order").click();
 	});
 });
