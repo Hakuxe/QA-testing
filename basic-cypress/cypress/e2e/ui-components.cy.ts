@@ -31,6 +31,11 @@ describe("Manipulating inputs", () => {
 						cy.wrap(suggestion).click();
 					}
 				});
+
+
+			// radio button
+
+			cy.get("input[value='radio2']").check().should("be.checked"); // click also works
 		});
 	});
 });
