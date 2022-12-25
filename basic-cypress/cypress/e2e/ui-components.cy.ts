@@ -11,7 +11,11 @@ describe("Manipulating inputs", () => {
 			//marking multiple checkboxes
 			// Check the checkboxes with the values 'option2' and 'option3'
 			cy.get("input[type='checkbox']").check(["option2", "option3"]);
+		});
+	});
 
+	context("dropdowns", () => {
+		it("selecting itens in static and dynamic dropdowns", () => {
 			// static dropdown select
 			//cy.get("#dropdown-class-example").select("option2"); // value
 			//cy.get("#dropdown-class-example").select("Option1"); //text
@@ -22,7 +26,7 @@ describe("Manipulating inputs", () => {
 
 			// dynamic dropdown select (similar to search suggestions)
 			const mySearch = "brazil";
-			cy.get("#autocomplete").type(mySearch.slice(0,3));
+			cy.get("#autocomplete").type(mySearch.slice(0, 3));
 
 			cy.get("#ui-id-1")
 				.find(".ui-menu-item")
@@ -31,11 +35,14 @@ describe("Manipulating inputs", () => {
 						cy.wrap(suggestion).click();
 					}
 				});
+		});
+	});
 
-
+	context("radio buttons", () => {
+		it("checking radio buttons ", () => {
 			// radio button
-
 			cy.get("input[value='radio2']").check().should("be.checked"); // click also works
+			cy.get("input[value='radio3']").click().should("be.checked"); // click also works
 		});
 	});
 });
