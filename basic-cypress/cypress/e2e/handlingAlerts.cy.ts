@@ -1,8 +1,7 @@
 describe("Learning how to handle alert messages", () => {
 	it("handling alter pop-up", () => {
-      const url = "https://rahulshettyacademy.com/AutomationPractice/";
-
-      cy.visit(url);
+     
+      cy.visit("/");
 
       //cypress handle popups by default
       cy.get("#alertbtn").click();
