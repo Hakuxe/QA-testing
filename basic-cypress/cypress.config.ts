@@ -12,6 +12,6 @@ export default defineConfig({
 			"cypress/e2e/**/*.spec.{js,jsx,ts,tsx}", //pode colocar o padrão que desejar
 		],
 
-		//baseUrl:"http://localhost:3000",
+		baseUrl:"https://rahulshettyacademy.com/AutomationPractice/",
 	},
 });
