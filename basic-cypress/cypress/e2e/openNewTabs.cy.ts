@@ -1,10 +1,7 @@
 describe("handling new tabs", () => {
-	const url = "https://rahulshettyacademy.com/AutomationPractice/";
-
 	it("check if browser open a new tab", () => {
 		//cypress can't move between multiple tabs so we have to remove the attribute target with jquery
-
-		cy.visit(url);
+		cy.visit("/");
 
 		cy.get("#opentab")
 			.invoke("removeAttr", "target")

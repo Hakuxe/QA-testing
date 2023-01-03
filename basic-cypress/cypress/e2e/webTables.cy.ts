@@ -1,8 +1,6 @@
 describe("handling web tables", () => {
-	const url = "https://rahulshettyacademy.com/AutomationPractice/";
-
 	it("should check if selenium price is 25", () => {
-		cy.visit(url);
+		cy.visit("/");
 
 		cy.get("#product")
 			.find("td")
