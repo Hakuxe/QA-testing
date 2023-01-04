@@ -18,4 +18,27 @@ describe("handling new tabs", () => {
 
 		cy.url().should("include", "rahulshettyacademy");
 	});
+
+	it("take the attribute of an element", () => {
+		cy.visit("/");
+
+		//pegar o atributo de um elemento
+		cy.get("#opentab")
+			.invoke("prop", "href")
+			.then((prop) => {
+				cy.log(prop);
+				// cy.visit(prop)
+			});
+
+		//outra forma
+		cy.get("#opentab").then((element) => {
+			const property = element.prop("href");
+			cy.visit(property);
+		});
+
+		//cypress não permite que seja mudado o domínio de testes
+		// ex: g1.com ir para google.com
+	});
+
+	
 });
