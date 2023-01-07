@@ -6,7 +6,7 @@ describe("template spec", () => {
 		// cy.fixture("user").then(data => {
 		// 	this.data = data
 		// })
-		cy.visit("https://www.rahulshettyacademy.com/angularpractice/");
+		cy.visit("/");
 	});
 
 	it("types on field name and select a gender", () => {
