@@ -9,7 +9,7 @@ describe("template spec", () => {
 		cy.visit("/");
 	});
 
-	it("types on field name and select a gender", () => {
+	it("fill in the name and gender fields on the form", () => {
 		cy.get("input[name='name']").first().type(user.name);
 		cy.get("#exampleFormControlSelect1").select(user.gender);
 	});
