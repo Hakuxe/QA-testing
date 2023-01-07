@@ -6,21 +6,21 @@ describe("template spec", () => {
 		// cy.fixture("user").then(data => {
 		// 	this.data = data
 		// })
+		cy.visit("https://www.rahulshettyacademy.com/angularpractice/");
 	});
 
-	it("passes", () => {
-		cy.visit("https://www.rahulshettyacademy.com/angularpractice/");
-
-		cy.get("input[name='name']:nth-child(1)").type(user.name);
+	it("types on field name and select a gender", () => {
+		cy.get("input[name='name']").first().type(user.name);
 		cy.get("#exampleFormControlSelect1").select(user.gender);
+	});
 
+	it("checks if input name have the correct min length", () => {
 		// getting element attribute
-		cy.get("input[name='name']:nth-child(1)").then((element) => {
-			const prop = element.prop("minlength");
-			cy.log(prop);
-			expect(prop).to.equal(2);
-		});
+		// .first() -> get the first element of a list
+		cy.get("input[name='name']").first().should("have.attr", "minLength", 2);
+	});
 
-		cy.get("input[name='name']:nth-child(1)").should("have.attr", "minlength", 2);
+	it("verify if Entrepreneur option is disable in Employment Status", () => {
+		cy.get("#inlineRadio3").should("be.disabled");
 	});
 });
