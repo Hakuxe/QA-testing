@@ -18,15 +18,7 @@ describe("testing custom commands in cypress", () => {
 		//assert
 		cy.url().should("include", "shop");
 
-		cy.get(".card-title").each((el, index, list) => {
-			if (el.text().includes("iphone X")) {
-				cy.log("founded");
-            cy.get("button.btn.btn-info").eq(index);
-			}
-
-         //todo finalizar a implementação
-
-			// if(el[index].textContent === "iphone X")
-		});
+		cy.addProductToCart("iphone X");
+		cy.addProductToCart("Blackberry");
 	});
 });
