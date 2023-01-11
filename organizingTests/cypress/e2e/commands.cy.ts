@@ -1,3 +1,4 @@
+import {products} from "../fixtures/example.json";
 describe("testing custom commands in cypress", () => {
 	/*
     AAA Pattern:
@@ -8,7 +9,7 @@ describe("testing custom commands in cypress", () => {
       link - https://medium.com/xebia-engineering/unit-testing-aaa-pattern-ab1c08737d53
    */
 
-	it("", () => {
+	it("testing cypress commands", () => {
 		//arrange
 		cy.visit("/");
 
@@ -18,7 +19,8 @@ describe("testing custom commands in cypress", () => {
 		//assert
 		cy.url().should("include", "shop");
 
-		cy.addProductToCart("iphone X");
-		cy.addProductToCart("Blackberry");
+		products.map(item =>{
+			cy.addProductToCart(item);
+		})
 	});
 });
