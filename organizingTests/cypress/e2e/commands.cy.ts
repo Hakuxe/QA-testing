@@ -14,7 +14,7 @@ describe("testing custom commands in cypress", () => {
 		cy.visit("/");
 
 		//act
-		cy.get("li.nav-item").last().click();
+		cy.get("li.nav-item").last().click().debug();
 
 		//assert
 		cy.url().should("include", "shop");

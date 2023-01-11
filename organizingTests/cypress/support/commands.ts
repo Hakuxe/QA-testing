@@ -45,10 +45,7 @@ declare namespace Cypress {
 Cypress.Commands.add("addProductToCart", (productName: string) => {
 	cy.get(".card-title").each((el, index, list) => {
 		if (el.text().includes(productName)) {
-			cy.log("founded");
 			cy.get("button.btn.btn-info").eq(index).click();
 		}
-
-		//todo finalizar a implementação
 	});
 });
