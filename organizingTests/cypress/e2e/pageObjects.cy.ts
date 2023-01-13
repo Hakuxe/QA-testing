@@ -36,6 +36,13 @@ describe("testing the page object model for tests", () => {
 				if (!Number.isNaN(isElNaN)) {
 					cartTotal += elConvertedToNumber;
 				}
+
+				//another way
+				// let res = el.text().split(" ");
+				// let cleanRes = res[1];
+
+				// cy.log(cleanRes);
+				// cartTotal = cartTotal + Number(cleanRes);
 			});
 
 		cy.get("h3 > strong").then((element) => {
@@ -43,5 +50,18 @@ describe("testing the page object model for tests", () => {
 
 			expect(elConvertedToNumber).to.eq(cartTotal);
 		});
+
+		cy.contains("Checkout").click();
+
+		cy.get("#country").type("Italy");
+
+		cy.get("div.suggestions", { timeout: 6000 })
+			.find("a")
+			.should("contain.text", "Italy")
+			.click();
+
+		cy.get("input[value='Purchase']").click();
+
+		cy.get("div.alert.alert-success").should("include.text", "Success");
 	});
 });
