@@ -1,0 +1,47 @@
+{
+	"signupValid": {
+		"name": "Wesley Melo",
+		"cpf": "52038711755",
+		"email": "teste@gmail.com",
+		"phone": "999999999",
+		"vehicleType": "moto",
+		"cnhPicture": "images/cnh-digital.jpg",
+		"address": {
+			"postalcode": "04534011",
+			"street": "Joaquim Floriano",
+			"number": "1000",
+			"district": "Itaim Bibi",
+			"cityAndState": "São Paulo/SP"
+		}
+	},
+	"cpfInvalid": {
+		"name": "Wesley Melo",
+		"cpf": "$#$#$#%#$%$121AAV",
+		"email": "teste@gmail.com",
+		"phone": "999999999",
+		"vehicleType": "moto",
+		"cnhPicture": "images/cnh-digital.jpg",
+		"address": {
+			"postalcode": "04534011",
+			"street": "Joaquim Floriano",
+			"number": "1000",
+			"district": "Itaim Bibi",
+			"cityAndState": "São Paulo/SP"
+		}
+	},
+	"emailInvalid": {
+		"name": "Wesley Melo",
+		"cpf": "52038711755",
+		"email": "teste.gmail.com",
+		"phone": "999999999",
+		"vehicleType": "moto",
+		"cnhPicture": "images/cnh-digital.jpg",
+		"address": {
+			"postalcode": "04534011",
+			"street": "Joaquim Floriano",
+			"number": "1000",
+			"district": "Itaim Bibi",
+			"cityAndState": "São Paulo/SP"
+		}
+	}
+}
