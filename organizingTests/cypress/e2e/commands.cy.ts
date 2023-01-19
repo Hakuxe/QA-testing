@@ -11,7 +11,7 @@ describe("testing custom commands in cypress", () => {
 
 	it("testing cypress commands", () => {
 		//arrange
-		cy.visit("/");
+		cy.visit(Cypress.env("url") + "/angularpractice/");
 
 		//act
 		cy.get("li.nav-item").last().click().debug();
