@@ -19,4 +19,28 @@ describe("template spec", () => {
 
 		cy.wait("@getBook");
 	});
+
+	it("should check if response and ui are showing the same amount of itens ", () =>{
+
+		cy.visit("https://rahulshettyacademy.com/angularAppdemo/");
+		
+		cy.intercept(
+			{
+				method: "GET",
+				url: "https://rahulshettyacademy.com/Library/GetBook.php?AuthorName=shetty",
+			}).as("getBook");
+
+		cy.get("[data-target='#exampleModal']").click();
+
+		cy.get("tr").as("getRows")
+		cy.wait("@getBook").should(({request, response}) => {
+			console.log(response);
+
+			cy.get("tr")
+			
+			// expect(response.body.length).to.eq(1515);
+
+		});
+
+	})
 });
