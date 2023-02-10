@@ -7,5 +7,10 @@ export default defineConfig({
 		) {
 			// implement node event listeners here
 		},
+
+		baseUrl: "https://rahulshettyacademy.com/angularAppdemo/",
 	},
+	env:{
+		apiUrl: "https://rahulshettyacademy.com"
+	}
 });
