@@ -43,14 +43,13 @@ describe("template spec", () => {
 		});
 	});
 
-	it.only("it should intercept the book request and mock the response data", () => {
+	it("it should intercept the book request and mock the response data", () => {
 		const apiUrl = `${Cypress.env(
 			"apiUrl"
 		)}/Library/GetBook.php?AuthorName=shetty`;
-		
+
 		cy.visit("/");
 
-		console.log(Cypress.env("apiUrl"));
 		cy.intercept(
 			{
 				method: "GET",
@@ -70,5 +69,29 @@ describe("template spec", () => {
 
 		// espera a request ser processada antes de seguir
 		cy.wait("@getAllBooks");
+	});
+
+	it("should try to intercept a request and change the author name", () => {
+		cy.visit("https://rahulshettyacademy.com/angularAppdemo/");
+		
+		const apiUrl = `${Cypress.env(
+			"apiUrl"
+		)}/Library/GetBook.php?AuthorName=shetty`;
+
+
+		cy.intercept("GET", apiUrl, (request) => {
+			request.url = `${Cypress.env(
+				"apiUrl"
+			)}/Library/GetBook.php?AuthorName=test`;
+
+			request.continue((response) => {
+				expect(response.statusCode).to.eq(403);
+			})
+		}).as("securityTest");
+
+		cy.get('[data-target="#exampleModal"]').click();
+
+		cy.wait("@securityTest")
+
 	});
 });
