@@ -6,11 +6,12 @@ export default defineConfig({
 			config: Cypress.PluginConfigOptions
 		) {
 			// implement node event listeners here
+			require("cypress-failed-log/on")(on);
 		},
 
 		baseUrl: "https://rahulshettyacademy.com/angularAppdemo/",
 	},
-	env:{
-		apiUrl: "https://rahulshettyacademy.com"
-	}
+	env: {
+		apiUrl: "https://rahulshettyacademy.com",
+	},
 });

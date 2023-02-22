@@ -35,3 +35,23 @@
 //     }
 //   }
 // }
+
+declare namespace Cypress {
+  interface Chainable<Subject> {
+    LoginApi(email: string, password: string): Chainable<void>
+  }
+}
+
+Cypress.Commands.add("LoginApi", (email: string, password: string) => {
+	cy.session([email, password], () => {
+		cy.request("POST", "https://rahulshettyacademy.com/api/ecom/auth/login", {
+			userEmail: "rahulshetty@gmail.com",
+			userPassword: "Iamking@00",
+		}).then((response) => {
+			expect(response.status).to.eq(200);
+			expect(response.body).to.haveOwnProperty("token");
+
+			Cypress.env("token", response.body.token);
+		});
+	});
+});
