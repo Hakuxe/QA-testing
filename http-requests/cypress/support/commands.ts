@@ -52,6 +52,7 @@ Cypress.Commands.add("LoginApi", (email: string, password: string) => {
 			expect(response.body).to.haveOwnProperty("token");
 
 			Cypress.env("token", response.body.token);
+      window.localStorage.setItem("token", Cypress.env("token"));
 		});
 	});
 });
