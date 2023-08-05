@@ -1,4 +1,4 @@
-package org.example;
+package org.example.tests;
 
 import org.example.base.TestBase;
 import org.openqa.selenium.Alert;

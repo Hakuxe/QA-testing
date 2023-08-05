@@ -9,19 +9,19 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 
 public class TestBase {
-  protected WebDriver driver;
-  @BeforeMethod
-  public void beforeTest() {
+    protected WebDriver driver;
 
-    String url = "/src/test/resourses/componentes.html";
+    @BeforeMethod
+    public void beforeTest(){
+        String url = "/src/test/resourses/componentes.html";
 
-    driver = new ChromeDriver();
-    driver.get("file:///" + System.getProperty("user.dir") + url);
+        driver = new ChromeDriver();
+        driver.get("file:///" + System.getProperty("user.dir") + url);
+    }
 
-  }
 
-  @AfterMethod
-  public void afterTest() {
-    driver.quit();
-  }
+    @AfterMethod
+    public void afterTest() {
+        driver.quit();
+    }
 }
