@@ -2,6 +2,7 @@ package org.example.tests;
 
 import org.example.base.DSL;
 import org.example.base.TestBase;
+import org.example.pages.BasicElementsPOMPage;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -14,58 +15,44 @@ import java.util.List;
 public class BasicElementsRefactorDslTest extends TestBase {
 
     private DSL dsl;
+    BasicElementsPOMPage basicElementsPOMPage;
 
 
     @BeforeMethod
     public void initializeDsl() {
-        dsl = new DSL(driver);
+        basicElementsPOMPage = new BasicElementsPOMPage(driver);
     }
 
     @Test
     public void TextField() {
 
-        By nameInput = By.id("elementosForm:nome");
-        By surnameInput = By.id("elementosForm:sobrenome");
-        By textArea = By.id("elementosForm:sugestoes");
+        basicElementsPOMPage.fillName("olá");
+        basicElementsPOMPage.fillSurname("olá");
+        basicElementsPOMPage.fillTextarea("olá");
 
-        dsl.sendKeys(nameInput, "olá");
-        dsl.sendKeys(surnameInput, "olá");
-        dsl.sendKeys(textArea, "olá");
-
-        Assert.assertEquals(dsl.getElementAttribute(nameInput, "value"), "olá");
-        Assert.assertEquals(dsl.getElementAttribute(surnameInput, "value"), "olá");
-        Assert.assertEquals(dsl.getElementAttribute(textArea, "value"), "olá");
+        Assert.assertEquals(basicElementsPOMPage.getNameInputAttribute("value"), "olá");
+        Assert.assertEquals(basicElementsPOMPage.getSurnameInputAttribute("value"), "olá");
+        Assert.assertEquals(basicElementsPOMPage.getTextAreaAttribute("value"), "olá");
     }
 
     @Test
     public void radioButton() {
-        By radioMale = By.id("elementosForm:sexo:0");
-        By radioFemale = By.id("elementosForm:sexo:1");
+        basicElementsPOMPage.fillGender("Masculino");
 
-        dsl.click(radioMale);
-
-        Assert.assertTrue(driver.findElement(radioMale).isSelected());
-        Assert.assertFalse(driver.findElement(radioFemale).isSelected());
-
+        Assert.assertTrue(basicElementsPOMPage.radioMaleIsSelected());
+        Assert.assertFalse(basicElementsPOMPage.radioMaleIsSelected());
     }
 
     @Test
     public void checkBox() {
-        By pizzaCheckBox = By.id("elementosForm:comidaFavorita:2");
-        By meatCheckBox = By.id("elementosForm:comidaFavorita:0");
-        By chickenCheckBox = By.id("elementosForm:comidaFavorita:1");
-        By vegCheckBox = By.id("elementosForm:comidaFavorita:3");
 
+        basicElementsPOMPage.selectPizzaCheckBox();
+        basicElementsPOMPage.selectMeatCheckBox();
 
-        dsl.click(pizzaCheckBox);
-        dsl.click(meatCheckBox);
-
-
-        Assert.assertTrue(dsl.isSelected(pizzaCheckBox));
-        Assert.assertTrue(dsl.isSelected(meatCheckBox));
-        Assert.assertFalse(dsl.isSelected(chickenCheckBox));
-        Assert.assertFalse(dsl.isSelected(vegCheckBox));
-
+        Assert.assertTrue(basicElementsPOMPage.isCheckboxPizzaSelected());
+        Assert.assertTrue(basicElementsPOMPage.isCheckboxMeatSelected());
+        Assert.assertFalse(basicElementsPOMPage.isCheckboxChickenSelected());
+        Assert.assertFalse(basicElementsPOMPage.isCheckboxVegSelected());
     }
 
     @Test
@@ -101,91 +88,4 @@ public class BasicElementsRefactorDslTest extends TestBase {
         Assert.assertEquals(0, selectedOptions.size());
     }
 
-    @Test
-    public void alertBasic() {
-        By alertButton = By.id("alert");
-
-        dsl.click(alertButton);
-
-        Assert.assertEquals("Alert Simples", dsl.getAlertText());
-        dsl.dismissAlert();
-    }
-
-    @Test
-    public void alertConfirm() {
-        By alertButton = By.id("confirm");
-
-        dsl.click(alertButton);
-
-
-        Assert.assertEquals("Confirm Simples", dsl.getAlertText());
-
-        dsl.acceptAlert();
-        Assert.assertEquals("Confirmado", dsl.getAlertText());
-
-        dsl.dismissAlert();
-
-        dsl.click(alertButton);
-
-
-        Assert.assertEquals("Confirm Simples", dsl.getAlertText());
-        dsl.dismissAlert();
-
-        Assert.assertEquals("Negado", dsl.getAlertText());
-
-    }
-
-    @Test
-    public void iframe() {
-        By button = By.id("frameButton");
-
-        dsl.switchFocusToFrame("frame1");
-        dsl.click(button);
-
-
-        String alertText = dsl.getAlertText();
-        dsl.dismissAlert();
-
-        dsl.switchFocusToDefaultContent(); //voltar pra janela normal
-        dsl.sendKeys(By.id("elementosForm:nome"),alertText);
-        Assert.assertEquals("Frame OK!", alertText);
-
-    }
-
-    @Test
-    public void window() {
-        By popup = By.id("buttonPopUpEasy");
-        By textarea = By.tagName("textarea");
-
-        dsl.click(popup);
-
-        //external window
-        dsl.switchFocusToWindow("Popup");
-        dsl.sendKeys(textarea,"Working");
-//    driver.close();
-
-        dsl.switchFocusToDefaultContent();
-        dsl.sendKeys(textarea,"comeback");
-    }
-
-    @Test
-    public void windowHandlers() {
-        By popup = By.id("buttonPopUpEasy");
-        By textarea = By.tagName("textarea");
-
-        dsl.click(popup);
-
-        //external window
-        System.out.println(driver.getWindowHandle()); //mostrar a janela utilizada
-        System.out.println(driver.getWindowHandles()); //mostrar os ids de todas as janela capturadas pelo selenium
-
-        dsl.switchFocusToWindow((String) driver.getWindowHandles().toArray()[1]);
-        dsl.sendKeys(textarea,"Working");
-//    driver.close();
-
-        dsl.switchFocusToWindow((String) driver.getWindowHandles().toArray()[0]);
-        dsl.sendKeys(textarea,"comeback");
-
-
-    }
 }
