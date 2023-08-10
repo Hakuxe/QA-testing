@@ -23,6 +23,10 @@ public class BasicElementsPOMPage extends DSL {
     By chickenCheckBox = By.id("elementosForm:comidaFavorita:1");
     By vegCheckBox = By.id("elementosForm:comidaFavorita:3");
 
+    // SELECTS
+    By schooling = By.id("elementosForm:escolaridade");
+    By sports = By.id("elementosForm:esportes");
+
     public void fillName(String name) {
         sendKeys(nameInput, name);
     }
@@ -80,6 +84,35 @@ public class BasicElementsPOMPage extends DSL {
     }
     public boolean isCheckboxVegSelected(){
         return isSelected(vegCheckBox);
+    }
+
+
+    //Selects    ===============
+    public void selectSchooling(String level){
+        selectByVisibleText(schooling, level);
+    }
+
+    public String getSchoolingSelectedOpetion(){
+        return getTextFirstSelectedOption(schooling);
+    }
+
+    public int getSchoolingOptionNumber(){
+        return getSelectNumberOfOptions(schooling);
+    }
+
+    public void selectMultipleOptions(String[] options){
+        for (int i = 0; i < options.length; i++){
+            System.out.println(options[i]);
+            selectByVisibleText(sports, options[i]);
+        }
+    }
+
+    public int getSelectedOptions(){
+       return getAllSelectedOptions(sports).size();
+    }
+
+    public void clearOptionsSelected(){
+       clearSelectedOption(sports);
     }
 
 }

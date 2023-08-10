@@ -57,35 +57,26 @@ public class BasicElementsRefactorDslTest extends TestBase {
 
     @Test
     public void selects() {
-        By schooling = By.id("elementosForm:escolaridade");
-
-
-        Assert.assertEquals(dsl.getSelectNumberOfOptions(schooling), 8);
+        Assert.assertEquals(basicElementsPOMPage.getSchoolingOptionNumber(), 8);
 
         // select.selectByIndex(0);
         // Assert.assertEquals(select.getFirstSelectedOption().getText(), "1o grau incompleto");
         // select.selectByValue("2grauincomp");
         // Assert.assertEquals(select.getFirstSelectedOption().getText(), "2o grau incompleto");
-        dsl.selectByVisibleText(schooling, "2o grau incompleto");
-        Assert.assertEquals(dsl.getTextFirstSelectedOption(schooling), "2o grau incompleto");
+        basicElementsPOMPage.selectSchooling("2o grau incompleto");
+        Assert.assertEquals(basicElementsPOMPage.getSchoolingSelectedOpetion(), "2o grau incompleto");
     }
 
     @Test
 //    @Ignore
     public void multiOptionSelect() {
-        By schooling = By.id("elementosForm:esportes");
+        basicElementsPOMPage.selectMultipleOptions(new String[]{"Natacao", "Futebol","Karate"});
 
+        Assert.assertEquals(3, basicElementsPOMPage.getSelectedOptions());
 
-        dsl.selectByVisibleText(schooling, "Natacao");
-        dsl.selectByVisibleText(schooling, "Futebol");
-        dsl.selectByVisibleText(schooling, "Karate");
+        basicElementsPOMPage.clearOptionsSelected();
 
-        List<WebElement> selectedOptions = dsl.getAllSelectedOptions(schooling);
-        Assert.assertEquals(3, selectedOptions.size());
-
-        dsl.clearSelectedOption(schooling);
-        selectedOptions = dsl.getAllSelectedOptions(schooling);
-        Assert.assertEquals(0, selectedOptions.size());
+        Assert.assertEquals(0, basicElementsPOMPage.getSelectedOptions());
     }
 
 }
