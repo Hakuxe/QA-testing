@@ -1,6 +1,5 @@
 package org.example.base;
 
-import org.example.base.TestBase;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -102,4 +101,6 @@ public class DSL extends TestBase {
     public void switchFocusToWindow(String locator) {
         driver.switchTo().window(locator);
     }
+
+
 }

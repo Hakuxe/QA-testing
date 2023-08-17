@@ -3,6 +3,7 @@ package org.example.tests;
 import org.example.base.TestBase;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -235,6 +236,22 @@ public class BasicElementsTest extends TestBase {
 
         driver.switchTo().window((String) driver.getWindowHandles().toArray()[0]);
         driver.findElement(By.tagName("textarea")).sendKeys("comeback");
+
+
+    }
+
+    @Test
+    public void scrollJS(){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        WebElement frame = driver.findElement(By.id("frame2"));
+
+        js.executeScript("window.scrollBy(0, arguments[0])", frame.getLocation().y);
+        driver.switchTo().frame("frame2");
+
+        driver.findElement(By.id("frameButton")).click();
+
+        Alert alert = driver.switchTo().alert();
+        Assert.assertEquals(alert.getText(), "Frame OK!");
 
 
     }

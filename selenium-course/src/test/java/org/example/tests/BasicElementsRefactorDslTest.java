@@ -70,7 +70,7 @@ public class BasicElementsRefactorDslTest extends TestBase {
     @Test
 //    @Ignore
     public void multiOptionSelect() {
-        basicElementsPOMPage.selectMultipleOptions(new String[]{"Natacao", "Futebol","Karate"});
+        basicElementsPOMPage.selectMultipleOptions(new String[]{"Natacao", "Futebol", "Karate"});
 
         Assert.assertEquals(3, basicElementsPOMPage.getSelectedOptions());
 
@@ -78,5 +78,7 @@ public class BasicElementsRefactorDslTest extends TestBase {
 
         Assert.assertEquals(0, basicElementsPOMPage.getSelectedOptions());
     }
+
+
 
 }
