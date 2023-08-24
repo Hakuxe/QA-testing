@@ -102,5 +102,4 @@ public class DSL extends TestBase {
         driver.switchTo().window(locator);
     }
 
-
 }
