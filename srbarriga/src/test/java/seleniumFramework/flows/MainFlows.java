@@ -1,5 +1,6 @@
 package seleniumFramework.flows;
 
+import seleniumFramework.pages.AccountPage;
 import seleniumFramework.pages.MainPage;
 
 public class MainFlows {

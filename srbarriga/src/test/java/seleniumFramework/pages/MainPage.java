@@ -9,6 +9,7 @@ public class MainPage extends PageBase {
     By menuAccount = By.xpath("//*[@id='navbar']//li[@class='dropdown']");
 
     By insertAccountBtn = By.xpath("//a[@href='/addConta']");
+
     public void clickAccount(){
         click(menuAccount);
     }
