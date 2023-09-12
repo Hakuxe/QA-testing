@@ -15,4 +15,9 @@ public class MainFlows {
         mainPage.clickAccount();
         mainPage.clickInsertAccount();
     }
+
+    public void navigateToAccountList(){
+        mainPage.clickAccount();
+        mainPage.clickAccountListButton();
+    }
 }

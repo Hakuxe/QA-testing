@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
+
 public class PageBase extends SelectorsBase {
 
     // Métodos comuns entre classes page
@@ -41,11 +43,57 @@ public class PageBase extends SelectorsBase {
         driver.findElement(locator).sendKeys(text);
     }
 
+    protected void clearAndSendKeys(By locator, String text) {
+        WebElement webElement = waitForElement(locator);
+        webElement.clear();
+        webElement.sendKeys(text);
+    }
+
     protected String getValueInput(By locator) {
         return driver.findElement(locator).getAttribute("value");
     }
 
     protected String getText(By locator) {
         return waitForElement(locator).getText();
+    }
+
+
+    // table -----------------------------------------------------------------------------------------------------
+
+    public WebElement getCellOfTable(By tableLocator, String columnName, String cellValue){
+        //procurar coluna do registro
+        WebElement table = driver.findElement(tableLocator);
+        int idColumn = getColumnIndex(table, columnName);
+
+        //encontrar a linha do registro
+        int idRow = getRowIndex(table, idColumn, cellValue);
+
+        //clicar no botao da celula encontrada
+        return table.findElement(By.xpath(".//tr["+idRow+"]/td["+idColumn+"]"));
+    }
+
+    private int getRowIndex( WebElement table, int columnIndex, String cellValue) {
+        List<WebElement> rows = table.findElements(By.xpath("./tbody/tr/td["+columnIndex+"]"));
+        int rowIndex = -1;
+        for(int i = 0; i < rows.size(); i++) {
+            if(rows.get(i).getText().equals(cellValue)) {
+                rowIndex = i+1;
+                break;
+            }
+        }
+        return rowIndex;
+    }
+
+    private int getColumnIndex(WebElement table, String columnName) {
+        List<WebElement> columns = table.findElements(By.xpath(".//th"));
+        int columnIndex = -1;
+
+        for(int i = 0; i < columns.size(); i++) {
+            if(columns.get(i).getText().equals(columnName)) {
+                columnIndex = i+1;
+                break;
+            }
+        }
+        return columnIndex;
     }
 }
