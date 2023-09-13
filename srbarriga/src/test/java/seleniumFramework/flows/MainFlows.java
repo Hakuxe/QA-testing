@@ -20,4 +20,8 @@ public class MainFlows {
         mainPage.clickAccount();
         mainPage.clickAccountListButton();
     }
+
+    public void navigateToTransactionsPage(){
+       mainPage.goToTransactionsPage();
+    }
 }

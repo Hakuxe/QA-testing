@@ -10,16 +10,21 @@ public class MainPage extends PageBase {
 
     By insertAccountBtn = By.xpath("//a[@href='/addConta']");
     By linkAccountList = By.xpath("//a[@href='/contas']");
+    By linkTransactionsPage = By.xpath("//a[@href='/movimentacao']");
 
-    public void clickAccount(){
+    public void clickAccount() {
         click(menuAccount);
     }
 
-    public void clickInsertAccount(){
+    public void clickInsertAccount() {
         click(insertAccountBtn);
     }
 
-    public void clickAccountListButton(){
-    click(linkAccountList);
+    public void clickAccountListButton() {
+        click(linkAccountList);
+    }
+
+    public void goToTransactionsPage(){
+        click(linkTransactionsPage);
     }
 }
