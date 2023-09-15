@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -30,6 +31,11 @@ public class PageBase extends SelectorsBase {
     protected void waitForElementByTime(By locator, long time) {
         WebDriverWait wait = new WebDriverWait(driver, 30);
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+    }
+
+    protected boolean returnIfElementExists(By locator) {
+        List<WebElement> elements = driver.findElements(locator);
+        return elements.size() != 0;
     }
 
 
@@ -60,7 +66,7 @@ public class PageBase extends SelectorsBase {
 
     // table -----------------------------------------------------------------------------------------------------
 
-    public WebElement getCellOfTable(By tableLocator, String columnName, String cellValue){
+    public WebElement getCellOfTable(By tableLocator, String columnName, String cellValue) {
         //procurar coluna do registro
         WebElement table = driver.findElement(tableLocator);
         int idColumn = getColumnIndex(table, columnName);
@@ -69,15 +75,15 @@ public class PageBase extends SelectorsBase {
         int idRow = getRowIndex(table, idColumn, cellValue);
 
         //clicar no botao da celula encontrada
-        return table.findElement(By.xpath(".//tr["+idRow+"]/td["+idColumn+"]"));
+        return table.findElement(By.xpath(".//tr[" + idRow + "]/td[" + idColumn + "]"));
     }
 
-    private int getRowIndex( WebElement table, int columnIndex, String cellValue) {
-        List<WebElement> rows = table.findElements(By.xpath("./tbody/tr/td["+columnIndex+"]"));
+    private int getRowIndex(WebElement table, int columnIndex, String cellValue) {
+        List<WebElement> rows = table.findElements(By.xpath("./tbody/tr/td[" + columnIndex + "]"));
         int rowIndex = -1;
-        for(int i = 0; i < rows.size(); i++) {
-            if(rows.get(i).getText().equals(cellValue)) {
-                rowIndex = i+1;
+        for (int i = 0; i < rows.size(); i++) {
+            if (rows.get(i).getText().equals(cellValue)) {
+                rowIndex = i + 1;
                 break;
             }
         }
@@ -88,12 +94,19 @@ public class PageBase extends SelectorsBase {
         List<WebElement> columns = table.findElements(By.xpath(".//th"));
         int columnIndex = -1;
 
-        for(int i = 0; i < columns.size(); i++) {
-            if(columns.get(i).getText().equals(columnName)) {
-                columnIndex = i+1;
+        for (int i = 0; i < columns.size(); i++) {
+            if (columns.get(i).getText().equals(columnName)) {
+                columnIndex = i + 1;
                 break;
             }
         }
         return columnIndex;
+    }
+
+
+    // Select ----------------------------------------------------------------------------------------------------
+    protected void comboBoxSelectByVisibleText(By locator, String text) {
+        Select comboBox = new Select(waitForElement(locator));
+        comboBox.selectByVisibleText(text);
     }
 }

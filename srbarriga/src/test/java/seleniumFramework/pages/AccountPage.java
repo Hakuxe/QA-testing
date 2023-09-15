@@ -9,8 +9,7 @@ public class AccountPage extends PageBase {
 
     By btnSubmit = By.xpath("//*[@type='submit']");
 
-    By editBtnFirstAccountTable = By.xpath("//table[@id='tabelaContas']//tbody//tr[1]//td//a[@href=\"/editarConta?id" +
-            "=1900315\"]");
+    By editBtnFirstAccountTable = By.xpath("//table[@id='tabelaContas']//tbody//tr[1]//td//a//span[@class='glyphicon glyphicon-edit']");
 
     By accountsTable= By.xpath("//table[@id='tabelaContas']");
 
@@ -35,4 +34,8 @@ public class AccountPage extends PageBase {
        return  getCellOfTable(accountsTable,colName, cellValue).getText();
     }
 
+    public void clickRemoveAccountButton(String colName, String cellValue){
+        String xp = "./..//td//a//span[@class='glyphicon glyphicon-remove-circle']";
+        getCellOfTable(accountsTable,colName, cellValue).findElement(By.xpath(xp)).click();
+    }
 }

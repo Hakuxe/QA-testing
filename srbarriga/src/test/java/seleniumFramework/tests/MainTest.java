@@ -5,15 +5,19 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import seleniumFramework.core.TestBase;
+import seleniumFramework.flows.AccountFlow;
 import seleniumFramework.flows.LoginFlows;
 import seleniumFramework.flows.MainFlows;
+import seleniumFramework.flows.TransactionFlow;
 import seleniumFramework.pages.AccountPage;
 import seleniumFramework.pages.MainPage;
 import seleniumFramework.pages.TransactionsPage;
+import seleniumFramework.utils.DateUtils;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class MainTest extends TestBase {
@@ -23,6 +27,9 @@ public class MainTest extends TestBase {
     MainPage mainPage;
     AccountPage accountPage;
     TransactionsPage transactionsPage;
+    TransactionFlow transactionFlow;
+
+    AccountFlow accountFlow;
 
 
     @BeforeMethod
@@ -31,13 +38,10 @@ public class MainTest extends TestBase {
         mainPage = new MainPage();
         loginFlows = new LoginFlows();
         accountPage = new AccountPage();
+        accountFlow = new AccountFlow();
         transactionsPage = new TransactionsPage();
+        transactionFlow = new TransactionFlow();
 
-        loginFlows.login();
-    }
-
-    @Test
-    public void basicLogin() {
         loginFlows.login();
     }
 
@@ -56,19 +60,23 @@ public class MainTest extends TestBase {
 
     @Test
     public void editAccount() {
-        String name = "conta alterada";
+        String name = "conta editar";
+        String newName = "Conta modificada no test";
+        String expectedAccountMessage = "Conta adicionada com sucesso!";
         String expectedSuccessMessage = "Conta alterada com sucesso!";
 
+        mainFlows.navigateToInsertAccount();
+        accountFlow.addAccount(name);
+        Assert.assertEquals(accountPage.getTextAlert(), expectedAccountMessage);
+
         mainFlows.navigateToAccountList();
-
-
         accountPage.clickAlterAccount();
 
-        accountPage.fillAccountName(name);
+        accountPage.fillAccountName(newName);
         accountPage.clickSubmitButton();
         Assert.assertEquals(accountPage.getTextAlert(), expectedSuccessMessage);
 
-        Assert.assertEquals(accountPage.getTextCell("Conta", name), name);
+        Assert.assertEquals(accountPage.getTextCell("Conta", newName), newName);
     }
 
     @Test
@@ -87,8 +95,9 @@ public class MainTest extends TestBase {
     @Test
     public void insertTransaction() {
 
-        String transactionDate = "01/09/2023";
-        String paymentDate = "01/09/2023";
+        Date currentDate = DateUtils.getCurrentDate();
+        String dateFormated = DateUtils.formatDate(currentDate, "dd/MM/YYYY");
+
         String description = "movimentação";
         String intrested = "carlitos";
         String value = "997";
@@ -99,8 +108,8 @@ public class MainTest extends TestBase {
 
         // TODO selecionar se transação é despesa ou receita
         // TODO selecionar conta para a movimentação
-        transactionsPage.fillFieldTransactionDate(transactionDate);
-        transactionsPage.fillFieldPaymentDate(paymentDate);
+        transactionsPage.fillFieldTransactionDate(dateFormated);
+        transactionsPage.fillFieldPaymentDate(dateFormated);
         transactionsPage.fillFieldDescription(description);
         transactionsPage.fillFieldIntrested(intrested);
         transactionsPage.fillFieldValue(value);
@@ -127,14 +136,62 @@ public class MainTest extends TestBase {
 
         List<WebElement> errors = transactionsPage.getErrorListMessages();
 
-        for (int i = 0; i < expected.size() ; i++) {
-            Assert.assertTrue(transactionsPage.checkListContainsText(errors, expected.get(i)));
+        Assert.assertEquals(errors.size(), 6);
+        for (String s : expected) {
+            Assert.assertTrue(transactionsPage.checkListContainsText(errors, s));
         }
     }
 
     @Test
-    public void checkErrorTransactionWithTransactionDateBiggerThenCurrentDate(){
-        String transactionDate = "20/09/2023";
+    public void deleteTransaction() {
+        String accountName = "Conta Delete";
+
+        Date currentDate = DateUtils.getCurrentDate();
+        String dateFormated = DateUtils.formatDate(currentDate, "dd/MM/YYYY");
+        String description = "delete movimentação";
+        String intrested = "carlitos";
+        String value = "997";
+        String radioOption = "Pendente";
+
+        String expectedAccountMessage = "Conta adicionada com sucesso!";
+        String expectedAlertMessage = "Movimentação removida com sucesso!";
+
+        mainFlows.navigateToInsertAccount();
+        accountFlow.addAccount(accountName);
+        Assert.assertEquals(accountPage.getTextAlert(), expectedAccountMessage);
+
+        mainFlows.navigateToTransactionsPage();
+        transactionFlow.addTransaction(dateFormated, dateFormated, description, intrested, value, accountName, radioOption);
+
+        mainPage.goToMonthResume();
+
+        int sizeBeforeDelete = transactionsPage.numberOfTransactions();
+        transactionsPage.removeTransaction("Descrição", "delete movimentação");
+
+        Assert.assertEquals(mainPage.getTextAlert(), expectedAlertMessage);
+        Assert.assertEquals(transactionsPage.numberOfTransactions(), (sizeBeforeDelete - 1));
+    }
+
+    @Test
+    public void removeAccountWithTransaction(){
+        String accountToDelete = "conta alterada";
+        String expectedAlertMessage = "Conta em uso na movimentações";
+
+        // TODO criar conta aki para tornar test independente
+
+        mainFlows.navigateToAccountList();
+        accountPage.clickRemoveAccountButton("Conta", accountToDelete);
+
+        Assert.assertEquals(mainPage.getTextAlert(), expectedAlertMessage);
+    }
+
+    @Test
+    public void checkErrorTransactionWithTransactionDateBiggerThenCurrentDate() {
+
+        Date currentDate = DateUtils.getFutureDate(10);
+
+
+        String transactionDate = DateUtils.formatDate(currentDate, "dd/MM/YYYY");
         String paymentDate = "01/09/2023";
         String description = "movimentação";
         String intrested = "carlitos";
@@ -157,14 +214,40 @@ public class MainTest extends TestBase {
         Assert.assertEquals(accountPage.getTextAlert(), expectedAlertMessage);
     }
 
+    @Test
+    public void checkBalanceAccount(){
+        String name = "conta checa saldo";
+        Date currentDate = DateUtils.getCurrentDate();
+        String dateFormated = DateUtils.formatDate(currentDate, "dd/MM/YYYY");
+
+        String description = "movimentação";
+        String intrested = "carlitos";
+        String value = "997.00";
+        String radioOption = "Pago";
+        String expectedSuccessMessage = "Conta adicionada com sucesso!";
+        String expectedTransactionMessage = "Movimentação adicionada com sucesso!";
+
+        mainFlows.navigateToInsertAccount();
+        accountFlow.addAccount(name);
+        Assert.assertEquals(accountPage.getTextAlert(), expectedSuccessMessage);
+
+        mainFlows.navigateToTransactionsPage();
+        transactionFlow.addTransaction(dateFormated, dateFormated, description, intrested, value, name, radioOption);
+        Assert.assertEquals(accountPage.getTextAlert(), expectedTransactionMessage);
+
+        mainPage.goToHome();
+        Assert.assertEquals(mainPage.getAccountBalance(name), value);
+
+    }
+
     //    Testes
     //    [x] - Inserir conta com mesmo nome
     //    [x] - Inserir movimentação
     //    [X] - Campos obrigatórios de movimentação
     //    [x] - Movimentação futura
-    //    [] - Remover movimentação
-    //    [] - Remover conta com movimentação
-    //    [] - Saldo Das contas
+    //    [x] - Remover movimentação
+    //    [x] - Remover conta com movimentação
+    //    [x] - Saldo Das contas
     //    [] - Resumo mensal
 
 }

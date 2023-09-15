@@ -9,6 +9,9 @@ import java.util.List;
 public class TransactionsPage extends PageBase {
 
     By errorMessages = By.xpath("//*[@role='alert']//li");
+    By transactionsTable = By.xpath("//*[@id='tabelaExtrato']");
+
+    By transactionTableLines = By.xpath("//*[@id='tabelaExtrato']//tbody//tr");
 
     By fieldTransactionType = By.xpath("//*[@id='tipo']");
     By fieldTransactionDate = By.xpath("//*[@id='data_transacao']");
@@ -65,8 +68,8 @@ public class TransactionsPage extends PageBase {
         sendKeys(fieldValue, value);
     }
 
-    public void fillFieldAccount(String value) {
-        sendKeys(fieldAccount, value);
+    public void selectAccount(String value) {
+        comboBoxSelectByVisibleText(fieldAccount, value);
     }
 
     public void selectRadioByLabel(String labelText){
@@ -77,6 +80,20 @@ public class TransactionsPage extends PageBase {
         System.out.println(clearLocator);
 
         click(By.xpath(clearLocator));
+    }
+
+    public String getTextCell(String colName, String cellValue){
+        return  getCellOfTable(transactionsTable,colName, cellValue).getText();
+    }
+
+    public void removeTransaction(String colName, String cellValue){
+        String xp = "./..//td//a";
+        getCellOfTable(transactionsTable,colName, cellValue).findElement(By.xpath(xp)).click();
+    }
+
+    public int numberOfTransactions(){
+       List<WebElement> list =  waitForElement(transactionsTable).findElements(By.xpath(".//tbody//tr"));
+       return list.size();
     }
 
 }
