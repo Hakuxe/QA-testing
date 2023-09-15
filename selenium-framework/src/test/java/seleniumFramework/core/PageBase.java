@@ -29,6 +29,11 @@ public class PageBase {
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
+     protected boolean returnIfElementExists(By locator) {
+        List<WebElement> elements = driver.findElements(locator);
+        return elements.size() != 0;
+    }
+
 
     protected void click(By locator){
         waitForElement(locator);
@@ -48,6 +53,10 @@ public class PageBase {
 
     protected  String getValueInput(By locator){
         return driver.findElement(locator).getAttribute("value");
+    }
+
+    protected String getText(By locator) {
+        return waitForElement(locator).getText();
     }
 
      // table -----------------------------------------------------------------------------------------------------
@@ -87,5 +96,12 @@ public class PageBase {
             }
         }
         return columnIndex;
+    }
+
+     // Select ----------------------------------------------------------------------------------------------------
+
+    protected void comboBoxSelectByVisibleText(By locator, String text) {
+        Select comboBox = new Select(waitForElement(locator));
+        comboBox.selectByVisibleText(text);
     }
 }
