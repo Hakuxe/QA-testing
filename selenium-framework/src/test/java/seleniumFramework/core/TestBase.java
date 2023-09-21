@@ -15,16 +15,14 @@ public class TestBase {
     // base para criação dos tests
 
     private String testName = "";
+    String url = Properties.URL;
 
     @BeforeMethod
     public void beforeTest(Method method){
         DriverFactory.createDriver();
         testName = method.getName();
         DriverFactory.DRIVER.manage().window().maximize();
-
-        String url = "/src/test/resourses/componentes.html";
-
-        DriverFactory.DRIVER.get("file:///" + System.getProperty("user.dir") + url);
+        DriverFactory.DRIVER.navigate().to(url);
     }
 
     @AfterMethod

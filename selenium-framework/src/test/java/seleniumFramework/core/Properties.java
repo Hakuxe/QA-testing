@@ -6,9 +6,14 @@ public class Properties {
         CHROME,
         FIREFOX
     }
-    public static boolean CLOSE_BROWSER = false;
-    public static Browsers BROWSER_DEFAULT = Browsers.CHROME;
     public static long TIMEOUT = 30;
+    public static boolean CLOSE_BROWSER = false;
+    public static Browsers BROWSER = Browsers.CHROME;
+    public static String EXECUTION = "local";
+    public static String SELENIUM_HUB_URL = "";
+    public static String URL = "";
+    public static String DEFAULT_USER = "";
+    public static String DEFAULT_PASSWORD= "";
 
 
 
