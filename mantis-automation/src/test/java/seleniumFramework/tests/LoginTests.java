@@ -14,6 +14,9 @@ public class LoginTests extends TestBase {
 
     LoginPage loginPage;
 
+    //    Testes
+    //    [x] - Login no sistema com sucesso
+    //    [x] - Realizar login com senha inválida
 
     @BeforeMethod
     public void init() {
@@ -44,10 +47,5 @@ public class LoginTests extends TestBase {
 
         Assert.assertEquals(loginPage.getTextErrorLoginMessage(), expectedErrorMessage);
     }
-
-
-    //    Testes
-    //    [x] - Login no sistema com sucesso
-    //    [x] - Realizar login com senha inválida
 
 }
