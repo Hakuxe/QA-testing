@@ -1,7 +1,7 @@
 package seleniumFramework.core;
 
-import com.sun.org.apache.xpath.internal.axes.FilterExprWalker;
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.testng.annotations.AfterMethod;
@@ -18,16 +18,15 @@ public class TestBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        DriverFactory.createDriver();
+        DriverFactory.getDriver();
         testName = method.getName();
-        DriverFactory.DRIVER.manage().window().maximize();
-
-        DriverFactory.DRIVER.navigate().to(Properties.URL);
+        DriverFactory.getDriver().manage().window().setSize(new Dimension(1200, 765));
+        DriverFactory.getDriver().navigate().to(Properties.URL);
     }
 
     @AfterMethod
     public void afterTest() {
-        TakesScreenshot screenshot = (TakesScreenshot) DriverFactory.DRIVER;
+        TakesScreenshot screenshot = (TakesScreenshot) DriverFactory.getDriver();
         File file = screenshot.getScreenshotAs(OutputType.FILE);
         try {
             FileUtils.copyFile(file, new File("target" + File.separator + "screenshots" + File.separator + testName +".jpg"));

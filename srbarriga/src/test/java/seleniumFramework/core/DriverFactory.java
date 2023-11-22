@@ -7,31 +7,48 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class DriverFactory {
 
-    public static WebDriver DRIVER;
+    //    public static WebDriver DRIVER;
 
-    public static WebDriver createDriver() {
-        if (DRIVER == null) {
+    private static ThreadLocal<WebDriver> threadLocal = new ThreadLocal<WebDriver>() {
+        @Override
+        protected synchronized WebDriver initialValue() {
+            return initDriver();
+        }
+    };
 
-            switch (Properties.BROWSER_DEFAULT) {
-                case CHROME:
-                    WebDriverManager.chromedriver().setup();
-                    DRIVER = new ChromeDriver();
-                    break;
+    public static WebDriver getDriver() {
+        return threadLocal.get();
+    }
 
-                case FIREFOX:
-                    WebDriverManager.firefoxdriver().setup();
-                    DRIVER = new FirefoxDriver();
-                    break;
-            }
+    public static WebDriver initDriver() {
+        WebDriver DRIVER = null;
+        //        if (DRIVER == null) {
+
+        switch (Properties.BROWSER_DEFAULT) {
+            case CHROME:
+                WebDriverManager.chromedriver().setup();
+                DRIVER = new ChromeDriver();
+                break;
+
+            case FIREFOX:
+                WebDriverManager.firefoxdriver().setup();
+                DRIVER = new FirefoxDriver();
+                break;
+            //            }
 
         }
         return DRIVER;
     }
 
     public static void quitDriver() {
+        WebDriver DRIVER = getDriver();
         if (DRIVER != null) {
             DRIVER.quit();
             DRIVER = null;
+        }
+
+        if (threadLocal != null) {
+            threadLocal.remove();
         }
     }
 }

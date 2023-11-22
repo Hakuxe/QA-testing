@@ -42,7 +42,7 @@ public class MainTest extends TestBase {
         transactionsPage = new TransactionsPage();
         transactionFlow = new TransactionFlow();
 
-        loginFlows.login();
+
     }
 
     @Test
@@ -50,7 +50,7 @@ public class MainTest extends TestBase {
         String name = "naruto";
         String expectedSuccessMessage = "Conta adicionada com sucesso!";
 
-
+        loginFlows.login();
         mainFlows.navigateToInsertAccount();
         accountPage.fillAccountName(name);
         accountPage.clickSubmitButton();
@@ -65,6 +65,7 @@ public class MainTest extends TestBase {
         String expectedAccountMessage = "Conta adicionada com sucesso!";
         String expectedSuccessMessage = "Conta alterada com sucesso!";
 
+        loginFlows.login();
         mainFlows.navigateToInsertAccount();
         accountFlow.addAccount(name);
         Assert.assertEquals(accountPage.getTextAlert(), expectedAccountMessage);
@@ -84,7 +85,7 @@ public class MainTest extends TestBase {
         String name = "narutoo";
         String expectedErrorMessage = "Já existe uma conta com esse nome!";
 
-
+        loginFlows.login();
         mainFlows.navigateToInsertAccount();
         accountPage.fillAccountName(name);
         accountPage.clickSubmitButton();
@@ -104,6 +105,7 @@ public class MainTest extends TestBase {
         String radioOption = "Pendente";
         String expectedAlertMessage = "Movimentação adicionada com sucesso!";
 
+        loginFlows.login();
         mainFlows.navigateToTransactionsPage();
 
         // TODO selecionar se transação é despesa ou receita
@@ -131,6 +133,7 @@ public class MainTest extends TestBase {
                 "Valor deve ser um número"
         ));
 
+        loginFlows.login();
         mainFlows.navigateToTransactionsPage();
         transactionsPage.clickSubmitButton();
 
@@ -156,6 +159,7 @@ public class MainTest extends TestBase {
         String expectedAccountMessage = "Conta adicionada com sucesso!";
         String expectedAlertMessage = "Movimentação removida com sucesso!";
 
+        loginFlows.login();
         mainFlows.navigateToInsertAccount();
         accountFlow.addAccount(accountName);
         Assert.assertEquals(accountPage.getTextAlert(), expectedAccountMessage);
@@ -178,7 +182,7 @@ public class MainTest extends TestBase {
         String expectedAlertMessage = "Conta em uso na movimentações";
 
         // TODO criar conta aki para tornar test independente
-
+        loginFlows.login();
         mainFlows.navigateToAccountList();
         accountPage.clickRemoveAccountButton("Conta", accountToDelete);
 
@@ -199,6 +203,7 @@ public class MainTest extends TestBase {
         String radioOption = "Pendente";
         String expectedAlertMessage = "Data da Movimentação deve ser menor ou igual à data atual";
 
+        loginFlows.login();
         mainFlows.navigateToTransactionsPage();
 
         // TODO selecionar se transação é despesa ou receita
@@ -227,6 +232,7 @@ public class MainTest extends TestBase {
         String expectedSuccessMessage = "Conta adicionada com sucesso!";
         String expectedTransactionMessage = "Movimentação adicionada com sucesso!";
 
+        loginFlows.login();
         mainFlows.navigateToInsertAccount();
         accountFlow.addAccount(name);
         Assert.assertEquals(accountPage.getTextAlert(), expectedSuccessMessage);

@@ -16,8 +16,8 @@ public class PageBase extends SelectorsBase {
     protected WebDriverWait wait = null;
 
     public PageBase() {
-        driver = DriverFactory.DRIVER;
-        wait = new WebDriverWait(DriverFactory.DRIVER, Properties.TIMEOUT);
+        driver = DriverFactory.getDriver();
+        wait = new WebDriverWait(driver, Properties.TIMEOUT);
     }
 
     protected WebElement waitForElement(By locator) {
