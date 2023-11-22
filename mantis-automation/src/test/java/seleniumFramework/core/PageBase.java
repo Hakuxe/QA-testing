@@ -109,4 +109,10 @@ public class PageBase {
         Select comboBox = new Select(waitForElement(locator));
         comboBox.selectByVisibleText(text);
     }
+
+    protected void comboBoxSelectByValue(By locator, String text) {
+        Select comboBox = new Select(waitForElement(locator));
+        comboBox.selectByValue(text);
+    }
+
 }
