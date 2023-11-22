@@ -1,9 +1,11 @@
 package seleniumFramework.tests;
 
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import seleniumFramework.core.GlobalProperties;
 import seleniumFramework.core.TestBase;
+import seleniumFramework.flows.LoginFlows;
 import seleniumFramework.pages.IssuePage;
 import seleniumFramework.pages.LoginPage;
 
@@ -12,25 +14,32 @@ public class IssueTests extends TestBase {
     //    [ ] = Cadastrar um Issue
     //    [ ] =
 
-    LoginPage loginPage;
+    LoginFlows loginFlows;
 
     IssuePage issuePage;
 
     @BeforeMethod
     public void init() {
-        loginPage = new LoginPage();
+        loginFlows = new LoginFlows();
         issuePage = new IssuePage();
 
-
-        loginPage.fillUsername(GlobalProperties.DEFAULT_USER);
-        loginPage.clickSubmitButton();
-        loginPage.fillPassword(GlobalProperties.DEFAULT_PASSWORD);
-        loginPage.uncheckAllowOnlySessionFromIp();
-        loginPage.clickSubmitButton();
+       loginFlows.loginDefaultUser();
     }
 
     @Test
-    public void createAnIssue(){
+    public void createAPublicIssue(){
+
+        String viewStatus = "public";
+        String priority = "high";
+        String severity = "major";
+        String reproducibility = "always";
+        String summary = "Esta é uma issue aberta por meio de teste com selenium 22-11";
+        String description = "Esta é a descrição da issue aberta por meio de teste com selenium 22-11";
+        String stepReproduce = "Passo a passo para reproduzir os erros......";
+        String additionalInfo = "Info adicional vai aki ";
+
+        String expectedSuccessMessage = "Operation successful.";
+
         issuePage.goToPageReportIssue();
         issuePage.clickSelectProjectBtn();
 
@@ -39,11 +48,26 @@ public class IssueTests extends TestBase {
         issuePage.selectPriorityByText("high");
         issuePage.fillSummary("Esta é uma issue aberta por meio de teste com selenium 22-11");
         issuePage.fillDescription("Esta é a descrição da issue aberta por meio de teste com selenium 22-11");
+        issuePage.fillStepsToReproduce("Passo a passo para reproduzir os erros......");
+        issuePage.fillAdditionalInfo("Info adicional vai aki ");
         issuePage.clickSubmitIssueBtn();
 
+        Assert.assertEquals(issuePage.getTextCreatedIssueSuccessAlert(), expectedSuccessMessage);
 
-        // mantis bloqueia a cada 10 issues criadas
-        // quanto tempo até desbloquear
+
+        Assert.assertEquals(issuePage.getTextIssueViewStatus(), viewStatus);
+//        Assert.assertEquals(issuePage.getTextIssueSubmittedDate(),);
+        Assert.assertEquals(issuePage.getTextIssuePriority(),priority);
+        Assert.assertEquals(issuePage.getTextIssueSeverity(),severity);
+        Assert.assertEquals(issuePage.getTextIssueReproducibility(),reproducibility);
+
+        // TODO o número da issue fica na frente do summary
+        Assert.assertEquals(issuePage.getTextIssueSummary(),summary);
+        Assert.assertEquals(issuePage.getTextIssueDescription(),description);
+        Assert.assertEquals(issuePage.getTextIssueStepsToReproduce(),stepReproduce);
+        Assert.assertEquals(issuePage.getTextIssueAdditionalInfo(),additionalInfo);
+
+        // confirir se os dados estão batendo na issue
 
 
 

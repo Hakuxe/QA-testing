@@ -26,7 +26,7 @@ public class TestBase {
     public void beforeTest(Method method){
         DriverFactory.getDriver();
         testName = method.getName();
-        DriverFactory.getDriver().manage().window().setSize(new Dimension(1200, 765));
+        DriverFactory.getDriver().manage().window().maximize();
         DriverFactory.getDriver().navigate().to(GlobalProperties.URL);
     }
 
