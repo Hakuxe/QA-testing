@@ -13,6 +13,8 @@ public class LoginPage extends PageBase {
 
     By errorMessage = By.xpath("//div[contains(@class, 'alert-danger')]");
 
+    By userInfo = By.xpath("//*[@class='user-info']");
+
     public void fillUsername(String email){
         sendKeys(fieldUsername, email);
     }
@@ -31,6 +33,10 @@ public class LoginPage extends PageBase {
 
     public String getTextErrorLoginMessage(){
         return getText(errorMessage);
+    }
+
+    public boolean checkUserInfoIsVisible(){
+        return returnIfElementExists(userInfo);
     }
 
 }

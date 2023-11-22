@@ -27,6 +27,8 @@ public class LoginTests extends TestBase {
         loginPage.fillPassword(GlobalProperties.DEFAULT_PASSWORD);
         loginPage.uncheckAllowOnlySessionFromIp();
         loginPage.clickSubmitButton();
+
+        Assert.assertTrue(loginPage.checkUserInfoIsVisible(), "Login não efetuado com sucesso" );
     }
 
     @Test
