@@ -20,6 +20,8 @@ public class IssuePage extends PageBase {
     By fieldStepsToReproduce = By.xpath("//*[@id='steps_to_reproduce']");
     By fieldAdditionalInfo = By.xpath("//*[@id='additional_info']");
 
+    By fieldViewStatusPrivate = By.xpath("//span[text()='private']");
+
 
     By btnSubmitIssue = By.xpath("//*[@value='Submit Issue']");
     By alertSuccessIssue = By.xpath("//*[contains(@class, 'alert-success')]//p");
@@ -73,6 +75,10 @@ public class IssuePage extends PageBase {
 
     public void fillAdditionalInfo(String text) {
         sendKeys(fieldAdditionalInfo, text);
+    }
+
+    public void setViewStatusToPrivate(){
+        click(fieldViewStatusPrivate);
     }
 
     public void clickSubmitIssueBtn() {

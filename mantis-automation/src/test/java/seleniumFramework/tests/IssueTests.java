@@ -71,4 +71,49 @@ public class IssueTests extends TestBase {
 
     }
 
+    @Test
+    public void createAPrivateIssue(){
+
+        String viewStatus = "private";
+        String priority = "high";
+        String severity = "major";
+        String reproducibility = "always";
+        String summary = "Esta é uma issue aberta como private";
+        String description = "Esta é a descrição da issue aberta por meio de teste com selenium";
+        String stepReproduce = "Passo a passo para reproduzir os erros......";
+        String additionalInfo = "Info adicional vai aki";
+
+        String expectedSuccessMessage = "Operation successful.";
+
+        issuePage.goToPageReportIssue();
+        issuePage.clickSelectProjectBtn();
+
+        issuePage.selectReproducibilityByText(reproducibility);
+        issuePage.selectSeverityByText(severity);
+        issuePage.selectPriorityByText(priority);
+        issuePage.fillSummary(summary);
+        issuePage.fillDescription(description);
+        issuePage.fillStepsToReproduce(stepReproduce);
+        issuePage.fillAdditionalInfo(additionalInfo);
+        issuePage.setViewStatusToPrivate();
+        issuePage.clickSubmitIssueBtn();
+
+        Assert.assertEquals(issuePage.getTextCreatedIssueSuccessAlert(), expectedSuccessMessage);
+
+
+        Assert.assertEquals(issuePage.getTextIssueViewStatus(), viewStatus);
+
+        String actualDate = issuePage.getTextIssueSubmittedDate().split(" ")[0];
+        Assert.assertEquals(actualDate, Utils.getNowDate("yyyy-MM-dd"));
+
+        Assert.assertEquals(issuePage.getTextIssuePriority(),priority);
+        Assert.assertEquals(issuePage.getTextIssueSeverity(),severity);
+        Assert.assertEquals(issuePage.getTextIssueReproducibility(),reproducibility);
+        Assert.assertTrue(issuePage.getTextIssueSummary().contains(summary));
+        Assert.assertEquals(issuePage.getTextIssueDescription(),description);
+        Assert.assertEquals(issuePage.getTextIssueStepsToReproduce(),stepReproduce);
+        Assert.assertEquals(issuePage.getTextIssueAdditionalInfo(),additionalInfo);
+
+    }
+
 }
