@@ -17,7 +17,7 @@ describe("Basic comands", () => {
 		cy.get("#buttonSimple").click().should("contain.value", "Obrigado!");
 	});
 
-	it.only("should fill text input", () => {
+	it("should fill text input", () => {
 		const name = "Sara";
 
 		cy.get("#formNome").type(name).should("contain.value", name);
@@ -35,5 +35,15 @@ describe("Basic comands", () => {
 			.should("contain.value", "novo nome");
 	});
 
-	
+	it("should select radio button male", () => {
+		cy.get("[name='formSexo']").first().check().should("be.checked");
+		cy.get("[name='formSexo']")
+			.check("F")
+			.should("be.checked")
+			.and("have.value", "F"); // check by value
+	});
+
+	it.only("should select checkbox", () => {
+		cy.get("[name='formComidaFavorita']").check(["carne", "frango", "pizza"]);
+	});
 });
