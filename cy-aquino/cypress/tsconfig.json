@@ -7,9 +7,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
-    "paths": {
-      "@fixtures/*": ["./fixtures/*"]
-    }
+
   },
   "include": ["**/*.ts"]
 }
