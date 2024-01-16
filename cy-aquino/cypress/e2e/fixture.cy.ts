@@ -33,4 +33,19 @@ describe("test using fixture", () => {
 		cy.get("#formCadastrar").click();
 		cy.get("#resultado span").first().should("have.text", "Cadastrado!");
 	});
+
+	it.only("should use a fixture using ts file ", () => {
+		cy.fixture("user.js").then((data) => {
+			console.log(data);
+			cy.get("#formNome").type(user.name);
+			cy.get("#formSobrenome").type(user.surname);
+			cy.get("[name='formSexo']").check(user.gender);
+			cy.get("[name='formComidaFavorita']").check(user.favoriteFood);
+			cy.get("[data-test='dataEscolaridade']").select(user.educationLevel);
+			cy.get("#formEsportes").select(user.sports);
+
+			cy.get("#formCadastrar").click();
+			cy.get("#resultado span").first().should("have.text", "Cadastrado!");
+		});
+	});
 });
