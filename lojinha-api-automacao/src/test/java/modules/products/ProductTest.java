@@ -1,54 +1,49 @@
 package modules.products;
 
+import dataFactory.ProductDataFactory;
+import dataFactory.UserDataFactory;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Assertions;
+import pojo.UserPojo;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 @DisplayName("Testes módulo de produto")
 public class ProductTest {
 
-    @Test
-    @DisplayName("Validando valores inválidos para o campo valor do produto")
-    public void testSendInvalidEntriesToProductValue() {
+    private String token;
+
+    @BeforeEach
+    public void beforeEach(){
         baseURI = "http://165.227.93.41";
         //port = 3333;
         basePath = "/lojinha/v2";
 
-        String token = given()
+
+
+        this.token = given()
                 .contentType(ContentType.JSON)
-                .body("{\n" +
-                        "  \"usuarioLogin\": \"luffy\",\n" +
-                        "  \"usuarioSenha\": \"luffy\"\n" +
-                        "}")
+                .body(UserDataFactory.createUser())
                 .when().post("/login")
                 .then().extract().path("data.token");
 
+    }
+
+    // mudar o token pra privado
+    // obter token no before each
+    @Test
+    @DisplayName("Validando valores inválidos para o campo valor do produto")
+    public void testSendInvalidEntriesToProductValue() {
+
+
+
         given()
                 .contentType(ContentType.JSON)
-                .header("token", token)
-                .body("{\n" +
-                        "  \"produtoNome\": \"IPHONE 15 PRO MAX\",\n" +
-                        "  \"produtoValor\": 0,\n" +
-                        "  \"produtoCores\": [\n" +
-                        "    \"preto\", \"rosa\"\n" +
-                        "  ],\n" +
-                        "  \"produtoUrlMock\": \"\",\n" +
-                        "  \"componentes\": [\n" +
-                        "    {\n" +
-                        "      \"componenteNome\": \"carregador\",\n" +
-                        "      \"componenteQuantidade\": 1\n" +
-                        "    },\n" +
-                        "     {\n" +
-                        "      \"componenteNome\": \"capinha\",\n" +
-                        "      \"componenteQuantidade\": 1\n" +
-                        "    }\n" +
-                        "  ]\n" +
-                        "}")
+                .header("token", this.token)
+                .body(ProductDataFactory.createProductWithValue(0.00))
                 .when().post("/produtos")
                 .then()
                 .assertThat()
