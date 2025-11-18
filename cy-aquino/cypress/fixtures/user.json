@@ -1,0 +1,10 @@
+{
+  "name": "usuário",
+  "surname": "Teste",
+  "gender": "F",
+  "favoriteFood": [
+    "frango"
+  ],
+  "educationLevel": "Mestrado",
+  "sports": "Karate"
+}
