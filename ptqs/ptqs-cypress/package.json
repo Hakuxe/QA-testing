@@ -1,0 +1,19 @@
+{
+  "name": "ptqs-cypress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx cypress open",
+    "cy:run":"npx cypress run",
+    "cy:headed":"npx cypress run --headed"
+    
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "cypress": "^15.13.1"
+  }
+}
