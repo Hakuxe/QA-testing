@@ -1,4 +1,6 @@
 node_modules
 
-# Reports mocha awesome
+# Cypress 
+cypress/videos
+cypress/screenshots
 cypress/reports
