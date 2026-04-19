@@ -5,15 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "npx cypress open",
-    "cy:run":"npx cypress run",
-    "cy:headed":"npx cypress run --headed"
-    
+    "cy:run": "npx cypress run",
+    "cy:headed": "npx cypress run --headed"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "cypress": "^15.13.1"
+    "cypress": "^15.13.1",
+    "cypress-mochawesome-reporter": "^4.0.2"
   }
 }
