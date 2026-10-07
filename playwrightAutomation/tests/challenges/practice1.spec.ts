@@ -15,23 +15,6 @@ test.only("", async ({ page }) => {
     phone: "1234567890",
     password: "Password@123!",
   };
-
-  // await page.locator(".text-reset").click();
-
-  // await page.locator("#firstName").fill(userData.firstName);
-  // await page.locator("#lastName").fill(userData.lastName);
-  // await page.locator("#userEmail").fill(userData.email);
-  // await page.locator("#userMobile").fill(userData.phone);
-  // await page.locator("#userPassword").fill(userData.password);
-  // await page.locator("#confirmPassword").fill(userData.password);
-  // await page.locator("[type='checkbox']").click();
-
-  // await page.locator("#login").click();
-
-  // await expect(page.getByText("Account Created Successfully")).toBeVisible();
-
-  // await page.getByRole("button").click();
-
  
   await page.locator("#userEmail").fill(userData.email);
   await page.locator("#userPassword").fill(userData.password);
