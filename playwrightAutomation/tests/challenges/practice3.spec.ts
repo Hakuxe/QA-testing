@@ -68,13 +68,6 @@ test("should first", async ({ page }) => {
 
   });
 
-  await page.pause();
-
-  // get all event cards
-  // assert the first card is visible
-  // with all cards filter the one with your event title
-  // assert the matched card is visible
-  // read the seat count text from that card
 });
 
 // Step 2 — Create a new event
