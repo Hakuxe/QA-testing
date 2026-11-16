@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
-    "test-headed": "npx playwright test --headed"
+    "test-headed": "npx playwright test --headed",
+    "testp3":"npx playwright test challenges/practice3.spec.ts"
   },
   "keywords": [],
   "author": "",

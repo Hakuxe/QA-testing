@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 const userData = {
   firstName: "John",
   lastName: "doe",
+  phone: "+91 98765 43210",
   email: "john.doe12@example.com",
   password: "Password@123!",
 };
@@ -15,17 +16,16 @@ function getNextYearDate() {
 
 // https://eventhub.rahulshettyacademy.com/login
 
-// before test create an account
 
 // Step 1 — Login
-// log in with the created account
-// - Assert: link with text Browse Events → is visible (confirms login success)
-
 test("should first", async ({ page }) => {
+  const BASE_URL = "https://eventhub.rahulshettyacademy.com";
+
+  let eventList;
   const eventTitle = `Test Event${Date.now()}`;
   let seatsBeforeBooking;
-  getNextYearDate();
-  await page.goto("https://eventhub.rahulshettyacademy.com/login");
+
+  await page.goto("");
 
   // Step 1 — Login
   await page.getByLabel("Email").fill(userData.email);
@@ -36,8 +36,6 @@ test("should first", async ({ page }) => {
   // Step 2 — Create a new event
   await page.getByRole("button", { name: "Admin" }).click();
   await page.locator("nav a[href='/admin/events']").click();
-
-  // create event
   await page.getByTestId("event-title-input").fill(eventTitle);
   await page.getByRole("textbox", { name: "Describe the event…" }).fill("This is a test event");
   await page.getByRole("textbox", { name: "City*" }).fill("New York");
@@ -54,65 +52,70 @@ test("should first", async ({ page }) => {
 
   await page.getByTestId("nav-events").click();
   await page.getByTestId("event-card").first().waitFor({ state: "visible" });
-  const eventList = await page.getByTestId("event-card").all();
-  
-  eventList.forEach(async (event) => {
-    const cardTitle = await event.locator("a h3").textContent();
-    if(eventTitle ===  cardTitle){
+
+  eventList = await page.getByTestId("event-card").all();
+  for (const event of eventList) {
+    const cardTitle = (await event.locator("a h3").textContent())?.trim();
+
+    if (cardTitle === eventTitle) {
       await expect(event).toBeVisible();
-      seatsBeforeBooking = await event.getByText('seats available').textContent();
-      seatsBeforeBooking = seatsBeforeBooking?.replace(/\D/g,""); 
+
+      const seatsText = await event.getByText("seats available").textContent();
+      seatsBeforeBooking = Number(seatsText?.replace(/\D/g, ""));
 
       await event.getByTestId("book-now-btn").click();
+      break;
     }
+  }
 
-  });
+  //Step 4 and 5 — Fill booking form
+  await expect(page.locator("#ticket-count")).toHaveText("1");
+  await page.getByRole("textbox", { name: "Full Name*" }).fill("John");
+  await page.getByTestId("customer-email").fill("john.doe12@example.com");
+  await page.getByRole("textbox", { name: "Phone Number*" }).fill("+91 98765 43210");
+  await page.getByRole("button", { name: "Confirm Booking" }).click();
 
+  // Step 6 — Verify booking confirmation
+  await expect(page.locator(".booking-ref")).toBeVisible();
+  const bookingRef = await page.locator(".booking-ref").textContent();
+
+  // Step 7 — Verify in My Bookings
+  await page.locator('[data-testid="nav-bookings"]').click();
+  await page.waitForURL("**\/bookings");
+  await expect(page.url()).toBe(`${BASE_URL}/bookings`);
+
+  await page.waitForSelector("#booking-card");
+  const bookingCards = await page.locator("#booking-card").all();
+
+  for (const card of bookingCards) {
+    const cardRef = (await card.locator(".booking-ref").textContent())?.trim();
+
+    if (bookingRef?.trim() === cardRef) {
+      await expect(card).toBeVisible();
+      await expect(card.locator("h3")).toHaveText(eventTitle);
+      break;
+    }
+  }
+
+  // Step 8 — Verify seat reduction
+  await page.getByTestId("nav-events").click();
+  await page.getByTestId("event-card").first().waitFor({ state: "visible" });
+
+  eventList = await page.getByTestId("event-card").all();
+  for (const event of eventList) {
+    const cardTitle = (await event.locator("a h3").textContent())?.trim();
+
+    if (cardTitle === eventTitle) {
+      await expect(event).toBeVisible();
+    
+      await page.waitForTimeout(5000);
+
+      const seatsText = await event.getByText("seats available").textContent();
+      const seatsAfterBooking = Number(seatsText?.replace(/\D/g, ""));
+
+  
+      await expect(seatsAfterBooking).toBe(seatsBeforeBooking! - 1);   
+      break;
+    }
+  }
 });
-
-// Step 2 — Create a new event
-// - Navigate to /admin/events
-// - Generate a unique event title using Test Event ${Date.now()} — store this in a variable
-// - Fill Event Date & Time field with a future date
-// - Fill Total Seats field— use 50
-// - Click the submit button
-
-// - Assert: toast message Event created! is visible
-
-// Step 3 — Find the event card and capture seats
-// - Navigate to /events
-// - Get all event cards
-// - Assert the first card is visible
-// - From all cards, filter for the one that contains your event title text
-// - Assert the matched card is visible
-
-// - Read the seat count text from that card — store this as seatsBeforeBooking
-
-// Step 4 and 5 — Fill booking form
-// - On the matched event card, click the Book Now button
-// - Assert: element with id #ticket-count has text 1 (default quantity)
-// - Fill form and click confirm
-
-// Step 6 — Verify booking confirmation
-// - Locate the booking reference element
-// - Assert it is visible
-// - Read its inner text, trim it — store as bookingRef
-
-// Step 7 — Verify in My Bookings
-// - Click the link View My Bookings
-// - Assert: URL is BASE_URL/bookings
-// - Get all booking cards
-// - Assert the first booking card is visible
-// - Filter booking cards for the one that contains an element with class .booking-ref matching your bookingRef text
-
-// - Assert that matched card is visible
-// - Assert that matched card contains your eventTitle text
-
-// Step 8 — Verify seat reduction
-// - Navigate back to /events
-// - Assert the first event card is visible
-// - Filter cards again using eventTitle
-// - Assert the card is visible
-// - Read the seat count text again store as seatsAfterBooking
-
-// - Assert: seatsAfterBooking === seatsBeforeBooking - 1

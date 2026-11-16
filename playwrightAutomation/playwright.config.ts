@@ -1,16 +1,18 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests',
+  testDir: "./tests",
   //timeout: 60000,
-  // reporter: "html",
+  //reporter: "html",
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: 'http://localhost:3000',
-    browserName:"chromium",
+    // baseURL: "http://localhost:3000",
+    baseURL: "https://eventhub.rahulshettyacademy.com/login",
+    browserName: "chromium",
+    screenshot:{mode: "only-on-failure", fullPage: true},
+    video: { mode: "retain-on-failure" },
   },
-
 });

@@ -8,3 +8,18 @@ node_modules/
 /playwright/.auth/
 
 .env
+.env.*
+!.env.example
+
+# Debug and coverage output
+*.log
+coverage/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# Local tool metadata
+.aws/
+.codex/
+.agents/
